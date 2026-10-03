@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Doctor portal: post an emergency notice to take a day off and see appointments booked with you.">
+  <title>MediCare | Doctor Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#notice">Skip to emergency notice</a>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo" aria-label="MediCare home">
+        <span class="logo-mark" aria-hidden="true">🩺</span>
+        <span>MediCare</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNav">
+        <span class="sr-only">Menu</span>
+        <span class="bars" aria-hidden="true"></span>
+      </button>
+      <nav class="main-nav" id="mainNav" aria-label="Main">
+        <a href="index.html">Patients</a>
+        <a href="doctor.html" class="active" aria-current="page">Doctor portal</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Doctor portal</h2>
+          <p>Manage your own schedule notices. Data is saved in this browser only.</p>
+        </div>
+        <div class="who-field" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <p class="hint" id="doctorGreeting" style="margin:0"></p>
+          <button class="btn btn-ghost btn-small" type="button" data-action="logout-doctor">Log out</button>
+        </div>
+        <div id="doctorPanel" hidden>
+          <article class="form-panel profile-card" id="profileCard"></article>
+          <div class="form-panel" id="notice" style="margin-top:20px">
+            <h3>Emergency notice</h3>
+            <p class="hint" style="margin-bottom:14px">Can't make it in on a day you're normally scheduled? Post a notice for that date and it will be hidden from patient booking automatically. This does not cancel appointments already booked for that day — check the Admin page for those.</p>
+
+            <form id="offDayForm" novalidate>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Date you'll be unavailable</span>
+                  <input type="date" id="offDate" required>
+                  <small class="error" data-error-for="offDate"></small>
+                </label>
+                <label class="field field-wide">
+                  <span>Reason (optional, shown to admin only)</span>
+                  <input type="text" id="offReason" placeholder="e.g. Family emergency, sick leave">
+                </label>
+              </div>
+              <button class="btn btn-primary" type="submit">Post emergency notice</button>
+            </form>
+            <h3 style="margin-top:24px">Your upcoming off days</h3>
+            <ul class="mini-list" id="offDayList"></ul>
+          </div>
+          <div class="form-panel" style="margin-top:20px">
+            <h3>Appointments booked with you</h3>
+            <ul class="appt-list" id="doctorApptList" aria-live="polite" style="margin-top:14px"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p id="clinicName">MediCare Clinic</p>
+      <p id="clinicContact"></p>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- common.js must load first-->
+  <script src="common.js"></script>
+  <script src="doctor.js"></script>
+</body>
+</html>

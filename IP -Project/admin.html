@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin dashboard: manage doctors, appointments and emergency notices for the clinic.">
+  <title>MediCare | Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#adminDoctorsSection">Skip to doctor management</a>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo" aria-label="MediCare home">
+        <span class="logo-mark" aria-hidden="true">🩺</span>
+        <span>MediCare</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNav">
+        <span class="sr-only">Menu</span>
+        <span class="bars" aria-hidden="true"></span>
+      </button>
+      <nav class="main-nav" id="mainNav" aria-label="Main">
+        <a href="index.html">Patients</a>
+        <a href="doctor.html">Doctor portal</a>
+        <a href="admin.html" class="active" aria-current="page">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="section section-tint">
+      <div class="container">
+        <div class="section-head">
+          <h2>Admin dashboard</h2>
+          <p>Full access: add or remove doctors, manage every appointment, and override any doctor's emergency notice. Data is saved in this browser only.</p>
+          <button class="btn btn-ghost btn-small" type="button" data-action="logout-admin" style="margin-top:12px">Log out</button>
+        </div>
+        <div class="stats" id="stats"></div>
+        <div class="admin-grid" id="adminDoctorsSection">
+          <div class="form-panel">
+            <h3>Add a doctor</h3>
+            <form id="addDoctorForm" novalidate>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Name</span>
+                  <input type="text" id="dName" placeholder="Dr. Full Name" required>
+                </label>
+                <label class="field">
+                  <span>Specialty</span>
+                  <input type="text" id="dSpecialty" placeholder="e.g. Neurologist" required>
+                </label>
+                <label class="field">
+                  <span>Degrees</span>
+                  <input type="text" id="dDegree" placeholder="e.g. MBBS, FCPS">
+                </label>
+                <label class="field">
+                  <span>Experience (years)</span>
+                  <input type="number" id="dExp" min="0" max="60" value="5">
+                </label>
+                <label class="field">
+                  <span>Fee(Tk)</span>
+                  <input type="number" id="dFee" min="0" step="50" value="700">
+                </label>
+                <div class="field">
+                  <span>Hours</span>
+                  <div class="time-range">
+                    <input type="time" id="dStart" value="17:00" aria-label="Start time" required>
+                    <input type="time" id="dEnd" value="20:00" aria-label="End time" required>
+                  </div>
+                </div>
+                <label class="field field-wide">
+                  <span>Photo URL (optional)</span>
+                  <input type="url" id="dPhoto" placeholder="https://...">
+                </label>
+                <fieldset class="field field-wide days">
+                  <legend>Working days</legend>
+                  <div class="day-checks" id="dayChecks"></div>
+                </fieldset>
+              </div>
+              <p class="error" id="addDoctorError" role="alert"></p>
+              <button class="btn btn-primary" type="submit">Add doctor</button>
+            </form>
+          </div>
+          <div class="form-panel">
+            <h3>Doctors</h3>
+            <ul class="mini-list" id="adminDoctors"></ul>
+          </div>
+        </div>
+        <h3 class="table-title">Doctor emergency notices</h3>
+        <p class="hint" style="margin-bottom:12px">Posted by doctors from the Doctor portal. Clear one to make that date bookable again.</p>
+        <ul class="mini-list" id="adminOffDays" style="margin-bottom:28px"></ul>
+        <h3 class="table-title">All appointments</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Patient</th>
+                <th>Mobile</th>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="adminTable"></tbody>
+          </table>
+        </div>
+        <button class="btn btn-ghost btn-small" type="button" data-action="reset-data">Reset demo data</button>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p id="clinicName">MediCare Clinic</p>
+      <p id="clinicContact"></p>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- common.js must load first-->
+  <script src="common.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin login for MediCare Clinic.">
+  <title>MediCare | Admin Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo" aria-label="MediCare home">
+        <span class="logo-mark" aria-hidden="true">🩺</span>
+        <span>MediCare</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNav">
+        <span class="sr-only">Menu</span>
+        <span class="bars" aria-hidden="true"></span>
+      </button>
+      <nav class="main-nav" id="mainNav" aria-label="Main">
+        <a href="index.html">Patients</a>
+        <a href="doctor.html">Doctor portal</a>
+        <a href="admin.html" class="active" aria-current="page">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="section">
+      <div class="container" style="max-width:460px">
+        <div class="section-head">
+          <h2>Admin login</h2>
+          <p>Demo credentials: username <strong>txcsayeem</strong>, password <strong>sayeem1124</strong>. This is a client-side demo — do not reuse these credentials anywhere real.</p>
+        </div>
+        <form class="form-panel" id="adminLoginForm" novalidate>
+          <div class="form-grid">
+            <label class="field field-wide">
+              <span>Username</span>
+              <input type="text" id="aUsername" autocomplete="username" required>
+            </label>
+            <label class="field field-wide">
+              <span>Password</span>
+              <input type="password" id="aPassword" autocomplete="current-password" required>
+            </label>
+          </div>
+          <p class="error" id="loginError" role="alert"></p>
+          <button class="btn btn-primary btn-block" type="submit">Log in</button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p id="clinicName">MediCare Clinic</p>
+      <p id="clinicContact"></p>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- common.js must load first-->
+  <script src="common.js"></script>
+  <script src="admin-login.js"></script>
+</body>
+</html>

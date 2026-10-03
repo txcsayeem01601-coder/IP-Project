@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Book a doctor appointment online. Choose a specialist, pick a free time slot and confirm in under a minute.">
+  <title>MediCare | Book an Appointment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#doctors">Skip to doctors</a>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo" aria-label="MediCare home">
+        <span class="logo-mark" aria-hidden="true">🩺</span>
+        <span>MediCare</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNav">
+        <span class="sr-only">Menu</span>
+        <span class="bars" aria-hidden="true"></span>
+      </button>
+      <nav class="main-nav" id="mainNav" aria-label="Main">
+        <a href="index.html" class="active" aria-current="page">Patients</a>
+        <a href="doctor.html">Doctor portal</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+    </div>
+  </header>
+  <main id="home">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1>See the right doctor this week, not next month.</h1>
+          <p class="lead">Search a specialist, choose a free time slot and confirm. No phone calls, no waiting in line to ask for a time.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#appointment">Book an appointment</a>
+            <a class="btn btn-ghost" href="#doctors">Browse doctors</a>
+          </div>
+        </div>
+        <aside class="board" aria-labelledby="boardTitle">
+          <h2 id="boardTitle">Next free slots</h2>
+          <ul class="board-list" id="nextBoard">
+            <li class="board-empty">Loading doctors...</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+    <!--DOCTORS-->
+    <section class="section" id="doctors">
+      <div class="container">
+        <div class="section-head">
+          <h2>Our doctors</h2>
+          <p>Search by name or filter by specialty.</p>
+        </div>
+        <div class="filters">
+          <label class="field">
+            <span>Search</span>
+            <input type="search" id="searchInput" placeholder="Doctor name or specialty">
+          </label>
+          <label class="field">
+            <span>Specialty</span>
+            <select id="specialtyFilter">
+              <option value="">All specialties</option>
+            </select>
+          </label>
+        </div>
+        <div class="doctor-grid" id="doctorGrid" aria-live="polite"></div>
+      </div>
+    </section>
+    <!--BOOKING-->
+    <section class="section section-tint" id="appointment">
+      <div class="container booking-layout">
+        <div class="section-head">
+          <h2>Book an appointment</h2>
+          <p>Only free slots on the doctor's working days are shown. If a doctor has posted an emergency notice for a date, that date is hidden here automatically. You can change or cancel later from My appointments.</p>
+        </div>
+        <form class="form-panel" id="bookingForm" novalidate>
+          <div class="form-grid">
+            <label class="field">
+              <span>Patient name</span>
+              <input type="text" id="pName" autocomplete="name" placeholder="Full name" required>
+              <small class="error" data-error-for="pName"></small>
+            </label>
+            <label class="field">
+              <span>Mobile number</span>
+              <input type="tel" id="pPhone" autocomplete="tel" placeholder="01XXXXXXXXX" required>
+              <small class="error" data-error-for="pPhone"></small>
+            </label>
+            <label class="field">
+              <span>Doctor</span>
+              <select id="pDoctor" required>
+                <option value="">Select a doctor</option>
+              </select>
+              <small class="error" data-error-for="pDoctor"></small>
+            </label>
+            <label class="field">
+              <span>Date</span>
+              <input type="date" id="pDate" required>
+              <small class="error" data-error-for="pDate"></small>
+            </label>
+            <label class="field">
+              <span>Time slot</span>
+              <select id="pTime" required disabled>
+                <option value="">Select a doctor and date first</option>
+              </select>
+              <small class="hint" id="slotHint"></small>
+              <small class="error" data-error-for="pTime"></small>
+            </label>
+            <label class="field field-wide">
+              <span>Reason for visit (optional)</span>
+              <textarea id="pReason" rows="3" maxlength="200" placeholder="Briefly describe the problem"></textarea>
+            </label>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Confirm appointment</button>
+        </form>
+      </div>
+    </section>
+    <!--PATIENT DASHBOARD-->
+    <section class="section" id="patient">
+      <div class="container">
+        <div class="section-head">
+          <h2>My appointments</h2>
+          <p>Enter the mobile number you booked with to see your appointments.</p>
+        </div>
+        <div id="userStatusBar" style="margin-bottom:16px"></div>
+        <form class="lookup" id="lookupForm">
+          <label class="field">
+            <span>Mobile number</span>
+            <input type="tel" id="lookupPhone" placeholder="01XXXXXXXXX" autocomplete="tel">
+          </label>
+          <button class="btn btn-dark" type="submit">Show appointments</button>
+        </form>
+        <ul class="appt-list" id="patientList" aria-live="polite"></ul>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p id="clinicName">MediCare Clinic</p>
+      <p id="clinicContact"></p>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- common.js must load first-->
+  <script src="common.js"></script>
+  <script src="user.js"></script>
+</body>
+</html>

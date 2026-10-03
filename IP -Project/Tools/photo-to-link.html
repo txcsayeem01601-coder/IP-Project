@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediCare | Photo to Link</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .tool-wrap { max-width: 640px; margin: 48px auto; padding: 0 16px; }
+  .drop { border: 2px dashed #a9bab4; border-radius: 12px; padding: 28px; text-align: center; background: var(--white); }
+  .preview { display: flex; align-items: center; gap: 16px; margin-top: 18px; }
+  .preview img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
+  textarea#result { width: 100%; min-height: 110px; font-family: monospace; font-size: 0.8rem; margin-top: 10px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .note { color: var(--muted); font-size: 0.9rem; margin-top: 8px; }
+</style>
+</head>
+<body>
+  <div class="tool-wrap">
+    <h1 style="font-size:1.6rem">Photo &rarr; Link</h1>
+    <p class="hint" style="margin-bottom:18px">Pick a photo from your device. It's converted right here in your browser — no upload, no external website, no internet needed for this step. Copy the result and paste it into the Admin page's "Edit photo" box.</p>
+
+    <div class="drop">
+      <input type="file" id="fileInput" accept="image/*">
+    </div>
+
+    <div class="preview" id="previewBox" hidden>
+      <img id="previewImg" alt="Preview">
+      <div>
+        <div id="sizeInfo" class="note"></div>
+      </div>
+    </div>
+
+    <div id="resultBox" hidden>
+      <p style="margin-top:18px;font-weight:600">Your link (copy this):</p>
+      <textarea id="result" readonly></textarea>
+      <div class="row">
+        <button class="btn btn-primary btn-small" type="button" id="copyBtn">Copy link</button>
+      </div>
+      <p class="note" id="copyStatus"></p>
+      <p class="note">Copy বাটনে কাজ না হলে: উপরের বক্সের লেখায় ক্লিক করুন, সব সিলেক্ট হয়ে যাবে (বা নিজে সিলেক্ট করুন), তারপর Ctrl+C (মোবাইলে long-press &rarr; Copy) চাপুন।</p>
+    </div>
+
+    <p class="note" style="margin-top:24px">The photo is automatically resized to keep the link a reasonable length. This link works the same as any other photo URL — paste it into the "Photo URL" field when adding a doctor, or into "Edit photo" for an existing one.</p>
+  </div>
+
+<script>
+'use strict';
+const fileInput = document.getElementById('fileInput');
+const previewBox = document.getElementById('previewBox');
+const previewImg = document.getElementById('previewImg');
+const sizeInfo = document.getElementById('sizeInfo');
+const resultBox = document.getElementById('resultBox');
+const result = document.getElementById('result');
+const copyBtn = document.getElementById('copyBtn');
+const copyStatus = document.getElementById('copyStatus');
+
+const MAX_DIMENSION = 480; // px, keeps the resulting link a reasonable length
+
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > height && width > MAX_DIMENSION) {
+        height = Math.round(height * (MAX_DIMENSION / width));
+        width = MAX_DIMENSION;
+      } else if (height > MAX_DIMENSION) {
+        width = Math.round(width * (MAX_DIMENSION / height));
+        height = MAX_DIMENSION;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+
+      previewImg.src = dataUrl;
+      previewBox.hidden = false;
+      sizeInfo.textContent = `${width}\u00d7${height}px, ~${Math.round(dataUrl.length / 1024)} KB`;
+
+      result.value = dataUrl;
+      resultBox.hidden = false;
+      copyStatus.textContent = '';
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+result.addEventListener('click', () => result.select());
+result.addEventListener('focus', () => result.select());
+
+copyBtn.addEventListener('click', async () => {
+  result.select();
+  try {
+    await navigator.clipboard.writeText(result.value);
+    copyStatus.textContent = 'Copied. Now paste it into the Edit photo box on the Admin page.';
+  } catch {
+    document.execCommand('copy');
+    copyStatus.textContent = 'Copied. Now paste it into the Edit photo box on the Admin page.';
+  }
+});
+</script>
+</body>
+</html>
